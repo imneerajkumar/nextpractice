@@ -15,7 +15,6 @@ export default function About() {
       </Head>
       <main className={styles.main}>
         <Navbar />
-        <h1 className={styles.heading}>About</h1>
         <div className={styles.content}>
           <div className={styles.frame}>
             <img className={styles.img} src='/image.png' alt="Image" />

@@ -1,10 +1,48 @@
-/* eslint-disable @next/next/no-img-element */
 import Head from 'next/head'
 import styles from '@/styles/Login.module.scss'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Foooter'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const router = useRouter()
+  const [details, setDetails] = useState({
+    email: "",
+    password: ""
+  });
+
+  const handleChange = (event: any) => {
+    const { name, value } = event.target;
+
+    setDetails((prevValue) => {
+      return {
+        ...prevValue,
+        [name]: value
+      };
+    });
+  }
+
+  const handleSubmit = (event: any) => {
+    if(details.email == ''){
+      alert("Email cannot be empty!")
+    }
+    if(details.password.length < 8) {
+      alert("Password should be atleast 8 characters long")
+      setDetails((prevValue) => {
+        return {
+          ...prevValue,
+          password: ""
+        };
+      });
+    }
+    else {
+      alert(`Welcome ${details.email.split("@")[0]} You are now logged In.`)
+      event.preventDefault()
+      router.push("/display")
+    }
+  }
+
   return (
     <>
       <Head>
@@ -15,7 +53,49 @@ export default function Login() {
       </Head>
       <main className={styles.main}>
         <Navbar />
-        <h1>Login</h1>
+        <div className={styles.content}>
+          <div className={styles.card}>
+            <form className={styles.form}>
+              <h1 className={styles.logo}>LOGO</h1>
+              <div className="form-floating">
+                <input 
+                  type="email" 
+                  className="form-control" 
+                  id="floatingInput" 
+                  placeholder="name@example.com" 
+                  name='email'
+                  value={details.email}
+                  onChange={handleChange}
+                />
+                <label>Email address</label>
+              </div>
+              <div className="form-floating">
+                <input 
+                  type="password" 
+                  className="form-control" 
+                  id="floatingPassword" 
+                  placeholder="Password" 
+                  name='password'
+                  value={details.password}
+                  onChange={handleChange}
+                />
+                <label>Password</label>
+              </div>
+              <div className="checkbox mb-3">
+                <label>
+                  <input type="checkbox" value="remember-me" /> Remember me
+                </label>
+              </div>
+              <button 
+                className="w-100 btn btn-lg btn-danger" 
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Sign in
+              </button>
+            </form>
+          </div>
+        </div>
         <Footer />
       </main>
     </>
